@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+    markowzjusz:
+      #  build: .
+       image: markus20y/magnus
+       networks:
+         - lampucera
+       secrets:
+         - marko_secret3
+       environment:
+         MANIEK: /run/secrets/marko_secret3
+       volumes:
+         - maniek:/home
+       stdin_open: true
+       tty: true
+       deploy:
+          replicas: 3
+
+networks:
+  lampucera:
+
+volumes:
+  maniek:
+
+secrets:
+  marko_secret3:
+    external: true
+
+
+
+

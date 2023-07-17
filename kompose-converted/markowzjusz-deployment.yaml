@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: markowzjusz
+  name: markowzjusz
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: markowzjusz
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/lampucera: "true"
+        io.kompose.service: markowzjusz
+    spec:
+      containers:
+      - env:
+        - name: MANIEK
+          value: /run/secrets/marko-secret3
+        image: markus20y/magnus
+        imagePullPolicy: ""
+        name: markowzjusz
+        resources: {}
+        stdin: true
+        tty: true
+        volumeMounts:
+        - mountPath: /run/secrets/marko-secret3
+          name: marko-secret3
+        - mountPath: /home
+          name: maniek
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: marko-secret3
+        secret:
+          items:
+          - key: marko-secret3
+            path: marko-secret3
+          secretName: marko-secret3
+      - name: maniek
+        persistentVolumeClaim:
+          claimName: maniek
+status: {}
